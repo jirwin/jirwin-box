@@ -11,7 +11,7 @@
 
       "memory_size": "512",
       "cpu_count": "1",
-      "version": "0.0.1"
+      "version": "0.0.3"
     },
 
   "builders": [
@@ -122,12 +122,36 @@
 
   "provisioners": [
     {
+      "type": "file",
+      "source": "scripts/chef-wrapper",
+      "destination": "/tmp/chef-wrapper"
+    },
+    {
+      "type": "file",
+      "source": "scripts/chef-wrapper-install",
+      "destination": "/tmp/chef-wrapper-install"
+    },
+    {
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
         "scripts/setup-vagrant.sh",
         "scripts/sshd.sh",
         "scripts/vmtool.sh",
+        "scripts/chef.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/dev.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
         "scripts/minimize.sh",
         "scripts/cleanup.sh"
       ]

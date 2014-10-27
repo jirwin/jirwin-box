@@ -1,0 +1,8 @@
+#!/bin/sh
+for file in /usr/bin/* ; do
+        link="$(readlink $file)"
+        if [ "${link%/*}" = "/opt/chef/bin" ] ; then
+                rm -f "$file"
+                ln -s "${0%/*}/chef-wrapper" "$file"
+        fi
+done
